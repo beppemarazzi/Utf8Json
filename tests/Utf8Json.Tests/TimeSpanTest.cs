@@ -8,6 +8,7 @@ namespace Utf8Json.Tests
         [Fact]
         public void TimeSpan_Serialize()
         {
+            JsonSerializer.ToJsonString(TimeSpan.FromDays(88.5)).Is("\"88.12:00:00\"");
             JsonSerializer.ToJsonString(TimeSpan.FromDays(8.5)).Is("\"8.12:00:00\"");
             JsonSerializer.ToJsonString(TimeSpan.FromDays(7)).Is("\"7.00:00:00\"");
             JsonSerializer.ToJsonString(TimeSpan.FromHours(2.5)).Is("\"02:30:00\"");
@@ -22,6 +23,7 @@ namespace Utf8Json.Tests
         [Fact]
         public void TimeSpan_Deserialize()
         {
+            JsonSerializer.Deserialize<TimeSpan>("\"88.12:00:00\"").Is(TimeSpan.FromDays(88.5));
             JsonSerializer.Deserialize<TimeSpan>("\"8.12:00:00\"").Is(TimeSpan.FromDays(8.5));
             JsonSerializer.Deserialize<TimeSpan>("\"7.00:00:00\"").Is(TimeSpan.FromDays(7));
             JsonSerializer.Deserialize<TimeSpan>("\"02:30:00\"").Is(TimeSpan.FromHours(2.5));
@@ -37,6 +39,7 @@ namespace Utf8Json.Tests
         public void TimeSpan_Field_Serialize()
         {
             JsonSerializer.ToJsonString(new TimeSpanWrapper{Value = TimeSpan.FromDays(7)}).Is("{\"Value\":\"7.00:00:00\"}");
+            JsonSerializer.ToJsonString(new TimeSpanWrapper{Value = TimeSpan.FromDays(88.5)}).Is("{\"Value\":\"88.12:00:00\"}");
             JsonSerializer.ToJsonString(new TimeSpanWrapper{Value = TimeSpan.FromDays(8.5)}).Is("{\"Value\":\"8.12:00:00\"}");
             JsonSerializer.ToJsonString(new TimeSpanWrapper{Value = TimeSpan.FromDays(7).Add(TimeSpan.FromTicks(1))}).Is("{\"Value\":\"7.00:00:00.0000001\"}");
         }
@@ -44,6 +47,7 @@ namespace Utf8Json.Tests
         [Fact]
         public void TimeSpan_Field_Deserialize()
         {
+            JsonSerializer.Deserialize<TimeSpanWrapper>("{\"Value\":\"88.12:00:00\"}").Value.Is(TimeSpan.FromDays(88.5));
             JsonSerializer.Deserialize<TimeSpanWrapper>("{\"Value\":\"8.12:00:00\"}").Value.Is(TimeSpan.FromDays(8.5));
             JsonSerializer.Deserialize<TimeSpanWrapper>("{\"Value\":\"7.00:00:00\"}").Value.Is(TimeSpan.FromDays(7));
             JsonSerializer.Deserialize<TimeSpanWrapper>("{\"Value\":\"7.00:00:00.0000001\"}").Value.Is(TimeSpan.FromDays(7).Add(TimeSpan.FromTicks(1)));
